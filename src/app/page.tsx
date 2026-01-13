@@ -1,23 +1,38 @@
 'use client';
 
-import { useState } from 'react';
-import { Sidebar, PageType } from '@/components/layout/Sidebar';
+import { useAppStore, useAutoLoadData } from '@/store/app-store';
+import { Sidebar } from '@/components/layout/Sidebar';
 import { DashboardPage } from '@/components/pages/DashboardPage';
-import { UploadPage } from '@/components/pages/UploadPage';
-import { AIAnalyticsPage } from '@/components/pages/AIAnalyticsPage';
-import { DataOverviewPage } from '@/components/pages/DataOverviewPage';
+import { SalesAnalyticsPage } from '@/components/pages/SalesAnalyticsPage';
+import { RecommendationsPage } from '@/components/pages/RecommendationsPage';
+import { DataCenterPage } from '@/components/pages/DataCenterPage';
+import { LoginPage } from '@/components/pages/LoginPage';
+import { LoadingToast } from '@/components/ui/LoadingToast';
 
-export default function AnalyticsDashboard() {
-  const [currentPage, setCurrentPage] = useState<PageType>('dashboard');
+export default function App() {
+  const { user, currentPage, isLoading, dataStatus } = useAppStore();
 
+  // Show loading toast when main data is loading OR when invoices are still loading
+  const isDataLoading = isLoading || (dataStatus.sales.loaded && !dataStatus.invoices.loaded);
+
+  // Auto-load data from S3 when user is logged in
+  useAutoLoadData();
+
+  // Show login if not authenticated
+  if (!user) {
+    return <LoginPage />;
+  }
+
+  // Main 4 pages - matches Streamlit app structure
+  // Other pages (Research, SEO, Invoices, QR) are tabs within Data Center
   const renderPage = () => {
     switch (currentPage) {
-      case 'upload':
-        return <UploadPage />;
-      case 'ai':
-        return <AIAnalyticsPage />;
-      case 'data':
-        return <DataOverviewPage />;
+      case 'sales':
+        return <SalesAnalyticsPage />;
+      case 'recommendations':
+        return <RecommendationsPage />;
+      case 'data-center':
+        return <DataCenterPage />;
       default:
         return <DashboardPage />;
     }
@@ -28,11 +43,16 @@ export default function AnalyticsDashboard() {
       {/* Noise Overlay */}
       <div className="noise-overlay"></div>
 
-      <Sidebar currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      {/* Sidebar */}
+      <Sidebar />
 
+      {/* Main Content */}
       <main className="flex-1 p-8 overflow-y-auto">
         {renderPage()}
       </main>
+
+      {/* Loading Toast - mirrors Streamlit loading screen */}
+      <LoadingToast isVisible={isDataLoading} dataStatus={dataStatus} />
     </div>
   );
 }

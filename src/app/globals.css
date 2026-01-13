@@ -6,6 +6,7 @@
 :root {
   --ink: #050805;
   --paper: #f8f6f3;
+  --cream: #f0ede8;
   --accent: #1e391f;
   --accent-light: #3d6b3e;
   --muted: #6b6b6b;
@@ -14,6 +15,24 @@
   --success: #1e391f;
   --warning: #8b6914;
   --error: #8b1414;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+/* Dark mode */
+:root.dark {
+  --ink: #e8e6e3;
+  --paper: #121212;
+  --cream: #1a1a1a;
+  --accent: #4CAF50;
+  --accent-light: #66BB6A;
+  --muted: #9e9e9e;
+  --border: #2d2d2d;
+  --white: #1e1e1e;
+  --success: #4CAF50;
+  --warning: #FFB300;
+  --error: #EF5350;
 
   --background: var(--paper);
   --foreground: var(--ink);
@@ -63,6 +82,11 @@ body {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 }
 
+/* Serif font for headings */
+.font-serif {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
@@ -83,7 +107,9 @@ body {
 }
 
 /* Input focus styles */
-input:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
   border-color: var(--accent) !important;
 }
@@ -92,4 +118,27 @@ input:focus {
 button:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
+}
+
+/* Prose styles for AI responses */
+.prose {
+  line-height: 1.7;
+}
+
+.prose p {
+  margin-bottom: 1rem;
+}
+
+.prose ul,
+.prose ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.prose li {
+  margin-bottom: 0.5rem;
+}
+
+.prose strong {
+  font-weight: 600;
 }

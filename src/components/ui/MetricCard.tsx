@@ -5,8 +5,8 @@ import { LucideIcon, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 interface MetricCardProps {
   title: string;
   value: string;
-  change: number;
-  changeType: 'positive' | 'negative';
+  change?: number;
+  changeType?: 'positive' | 'negative';
   icon: LucideIcon;
   subtitle?: string;
 }
@@ -18,16 +18,18 @@ export function MetricCard({ title, value, change, changeType, icon: Icon, subti
         <div className="w-12 h-12 rounded-lg bg-[var(--accent)]/10 flex items-center justify-center">
           <Icon className="w-6 h-6 text-[var(--accent)]" />
         </div>
-        <div className={`flex items-center gap-1 text-sm font-medium ${
-          changeType === 'positive' ? 'text-[var(--success)]' : 'text-[var(--error)]'
-        }`}>
-          {changeType === 'positive' ? (
-            <ArrowUpRight className="w-4 h-4" />
-          ) : (
-            <ArrowDownRight className="w-4 h-4" />
-          )}
-          {Math.abs(change)}%
-        </div>
+        {change !== undefined && changeType && (
+          <div className={`flex items-center gap-1 text-sm font-medium ${
+            changeType === 'positive' ? 'text-[var(--success)]' : 'text-[var(--error)]'
+          }`}>
+            {changeType === 'positive' ? (
+              <ArrowUpRight className="w-4 h-4" />
+            ) : (
+              <ArrowDownRight className="w-4 h-4" />
+            )}
+            {Math.abs(change)}%
+          </div>
+        )}
       </div>
       <div>
         <p className="text-[var(--muted)] text-sm font-medium mb-1">{title}</p>

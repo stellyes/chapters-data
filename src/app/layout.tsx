@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
+import { DarkModeProvider } from "@/components/providers/DarkModeProvider";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -15,8 +16,8 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Chapters Analytics | Business Intelligence Dashboard",
-  description: "AI-powered analytics dashboard for business insights and data visualization",
+  title: "Chapters Analytics | Retail Intelligence Dashboard",
+  description: "AI-powered analytics dashboard for cannabis retail operations",
 };
 
 export default function RootLayout({
@@ -27,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${dmSans.variable} ${cormorant.variable} antialiased`}>
-        {children}
+        <DarkModeProvider>{children}</DarkModeProvider>
       </body>
     </html>
   );
